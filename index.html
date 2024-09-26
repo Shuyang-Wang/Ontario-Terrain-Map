@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Mapbox GL JS map with Layer Toggle</title>
+    <title>Topographic Map of Ontario</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.js"></script>
@@ -23,7 +23,7 @@
 <body>
 <div id="map"></div>
 <div class="control-panel">
-    <label><input type="checkbox" id="toggle-all-layers" checked> Toggle All Layers</label>
+    <label><input type="checkbox" id="toggle-topography" checked> Show Topography</label>
 </div>
 
 <script>
@@ -32,18 +32,19 @@
     const map = new mapboxgl.Map({
         container: 'map', // container ID
         style: 'mapbox://styles/shuyangwang/cm1b7b87900yg01pddw4we63k', // Your custom style
-        center: [-80.75639, 46.03517], // Center position [lng, lat] 
-        zoom: 13.51 // Initial zoom level
+        center: [-80.526, 43.464], // Center position [lng, lat] for Waterloo, Ontario
+        zoom: 14 // Adjusted zoom level
     });
 
     map.on('load', function () {
-        // Find all layers that match the naming pattern for future layers
-        const layerPrefix = ''; // Adjust this prefix to target relevant layers
-        const allLayers = map.getStyle().layers.filter(layer => layer.id.includes(layerPrefix));
+        // Find all layers without a specific naming pattern
+        const allLayers = map.getStyle().layers.filter(layer => layer.id.includes('')); // Adjust the layer prefix as needed
 
         // Add event listener for the toggle switch
-        document.getElementById('toggle-all-layers').addEventListener('change', function (e) {
+        document.getElementById('toggle-topography').addEventListener('change', function (e) {
             const visibility = e.target.checked ? 'visible' : 'none';
+
+            // Toggle all layers' visibility
             allLayers.forEach(function(layer) {
                 map.setLayoutProperty(layer.id, 'visibility', visibility);
             });
@@ -52,4 +53,3 @@
 </script>
 </body>
 </html>
-
