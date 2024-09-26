@@ -18,12 +18,38 @@
             border-radius: 5px;
             box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
+        .info-toggle {
+            margin-top: 10px;
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline;
+        }
+        .map-info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: white;
+            padding: 20px;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 5px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            display: none; /* Initially hidden */
+            z-index: 1;
+        }
     </style>
 </head>
 <body>
 <div id="map"></div>
 <div class="control-panel">
     <label><input type="checkbox" id="toggle-topography" checked> Show Topography</label>
+    <div class="info-toggle" id="toggle-info">Show Map Info</div>
+</div>
+
+<div class="map-info" id="map-info">
+    <h2>About the Map</h2>
+    <p>This map is part of a project to render high-quality, high-resolution topographic hillshade maps for the entire province of Ontario, wherever publicly available high-resolution Digital Terrain Model (DTM) data exists. The hillshade layer you see on this map has been rendered in <strong>Blender</strong>, rather than using conventional GIS software, to achieve significantly better visual quality and clarity.</p>
+    <p>The chosen colormap is designed to highlight subtle topographic changes, allowing for detailed analysis. Although this results in a "busy" appearance at a regional scale, this effect is intentional to enhance the visual representation of the terrain's complexity.</p>
 </div>
 
 <script>
@@ -48,6 +74,18 @@
             allLayers.forEach(function(layer) {
                 map.setLayoutProperty(layer.id, 'visibility', visibility);
             });
+        });
+
+        // Show/hide map info
+        document.getElementById('toggle-info').addEventListener('click', function () {
+            const infoSection = document.getElementById('map-info');
+            if (infoSection.style.display === 'none') {
+                infoSection.style.display = 'block';
+                this.textContent = 'Hide Map Info';
+            } else {
+                infoSection.style.display = 'none';
+                this.textContent = 'Show Map Info';
+            }
         });
     });
 </script>
