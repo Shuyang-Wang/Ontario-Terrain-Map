@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>COG Raster Display with OpenLayers</title>
+    <!-- OpenLayers CSS from the correct CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/css/ol.css" type="text/css">
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<!-- OpenLayers JS from the correct CDN -->
+<script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/build/ol.js"></script>
+
+<script>
+    // Initialize the OpenLayers map with a basemap
+    const map = new ol.Map({
+        target: 'map',
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.OSM()
+            })
+        ],
+        view: new ol.View({
+            center: ol.proj.fromLonLat([-80.0, 45.0]), // Adjust the view center (Longitude, Latitude)
+            zoom: 6 // Set the initial zoom level
+        })
+    });
+
+    // URL of the Cloud Optimized GeoTIFF (COG)
+    const cogUrl = 'https://ccemp-bucket.s3.us-east-2.amazonaws.com/Public+Access/COG/merged_output_cog.tif';
+
+    // Create a GeoTIFF source and layer
+    const geoTiffSource = new ol.source.GeoTIFF({
+        sources: [
+            {
+                url: cogUrl
+            }
+        ]
+    });
+
+    // Create a layer for the COG
+    const cogLayer = new ol.layer.Tile({
+        source: geoTiffSource
+    });
+
+    // Add the COG layer to the map
+    map.addLayer(cogLayer);
+</script>
+
+</body>
+</html>
